@@ -19,8 +19,8 @@ services:
       - db
     environment:
       DB_HOST: db
-      DB_DIALECT: mysql
-      DB_PORT: 3306
+      DB_DIALECT: postgres
+      DB_PORT: 5432
       DB_NAME: shafuku
       DB_USERNAME: test
       DB_PASSWORD: test
@@ -33,17 +33,25 @@ services:
       # hmr用ポート
       - 24678:24678
     command: npm run dev
+  # db:
+  #   image: mysql:8.0.30
+  #   ports:
+  #     - 3306:3306
+  #   volumes:
+  #     - ./.docker/data:/var/lib/mysql
+  #     - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+  #     - ./docker/db/sql:/docker-entrypoint-initdb.d
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: shafuku
+  #     MYSQL_USER: test
+  #     MYSQL_PASSWORD: test
+  #     TZ: Asia/Tokyo
   db:
-    image: mysql:8.0.30
+    image: postgres:15.0-alpine
     ports:
-      - 3306:3306
-    volumes:
-      - ./.docker/data:/var/lib/mysql
-      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./docker/db/sql:/docker-entrypoint-initdb.d
+      - 5432:5432
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: shafuku
-      MYSQL_USER: test
-      MYSQL_PASSWORD: test
-      TZ: Asia/Tokyo
+      POSTGRES_PASSWORD: test
+      POSTGRES_USER: test
+      POSTGRES_DB: shafuku

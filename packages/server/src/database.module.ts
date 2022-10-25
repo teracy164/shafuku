@@ -8,9 +8,9 @@ import { Dialect } from 'sequelize';
   imports: [
     ApiModule,
     SequelizeModule.forRoot({
-      dialect: (process.env.DB_DIALECT as Dialect) || 'mysql',
+      dialect: (process.env.DB_DIALECT as Dialect) || 'postgres',
       host: process.env.DB_HOST || 'localhost',
-      port: Number(process.env.DB_PORT || 3306),
+      port: Number(process.env.DB_PORT || 5432),
       username: process.env.DB_USERNAME || 'root',
       password: process.env.DB_PASSWORD || 'root',
       database: process.env.DB_NAME || 'test',
