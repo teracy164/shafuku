@@ -19,6 +19,7 @@ services:
       - db
     environment:
       DB_HOST: db
+      DB_DIALECT: mysql
       DB_PORT: 3306
       DB_NAME: shafuku
       DB_USERNAME: test
