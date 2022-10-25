@@ -14,6 +14,7 @@ import { Dialect } from 'sequelize';
       username: process.env.DB_USERNAME || 'root',
       password: process.env.DB_PASSWORD || 'root',
       database: process.env.DB_NAME || 'test',
+      ssl: process.env.NODE_ENV === 'production',
       autoLoadModels: true,
       synchronize: true,
       sync: {
