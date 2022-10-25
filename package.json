@@ -1,0 +1,11 @@
+{
+  "name": "shafuku",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".prettierrc.js",
+  "scripts": {
+    "dev": "docker-compose up --force-recreate"
+  },
+  "author": "",
+  "license": "ISC"
+}

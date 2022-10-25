@@ -1,0 +1,24 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#__nuxt {
+  height: 100%;
+}
+
+$headlineColor: #99f;
+.my-headline {
+  border-bottom: 1px solid $headlineColor;
+  padding-right: 10px;
+}
+.my-headline:before {
+  content: ' ';
+  padding: 0 3px;
+  margin-right: 10px;
+  border-top-right-radius: 20px;
+  background-color: $headlineColor;
+}

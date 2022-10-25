@@ -1,0 +1,48 @@
+version: "3.7"
+services:
+  proxy:
+    image: nginx:1.23.1
+    volumes:
+      - ./docker/nginx/templates:/etc/nginx/templates
+    ports:
+      - 8080:80
+    depends_on:
+      - server
+      - front
+  server:
+    image: node:18-alpine3.15
+    working_dir: /develop
+    volumes:
+      - ./packages/server:/develop
+    command: npm run start:dev
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: shafuku
+      DB_USERNAME: test
+      DB_PASSWORD: test
+  front:
+    image: node:18-alpine3.15
+    working_dir: /develop
+    volumes:
+      - ./packages/front:/develop
+    ports:
+      # hmr用ポート
+      - 24678:24678
+    command: npm run dev
+  db:
+    image: mysql:8.0.30
+    ports:
+      - 3306:3306
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/db/sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shafuku
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+      TZ: Asia/Tokyo
