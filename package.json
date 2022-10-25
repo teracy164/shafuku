@@ -1,11 +1,12 @@
 {
   "name": "shafuku",
-  "version": "1.0.0",
-  "description": "",
-  "main": ".prettierrc.js",
   "scripts": {
+    "postinstall": "lerna bootstrap",
+    "build": "lerna run build:prod",
+    "start": "lerna run start:prod",
     "dev": "docker-compose up --force-recreate"
   },
-  "author": "",
-  "license": "ISC"
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
 }
