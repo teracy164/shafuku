@@ -4,6 +4,9 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { SeederModule } from 'nestjs-sequelize-seeder';
 import { Dialect } from 'sequelize';
 
+const isProduction = process.env.NODE_ENV === 'production';
+console.log('is production', isProduction, process.env.NODE_ENV);
+
 @Module({
   imports: [
     ApiModule,
@@ -14,7 +17,7 @@ import { Dialect } from 'sequelize';
       username: process.env.DB_USERNAME || 'root',
       password: process.env.DB_PASSWORD || 'root',
       database: process.env.DB_NAME || 'test',
-      ssl: process.env.NODE_ENV === 'production',
+      ssl: isProduction,
       autoLoadModels: true,
       synchronize: true,
       sync: {
