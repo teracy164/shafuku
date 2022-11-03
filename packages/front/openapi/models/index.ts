@@ -83,6 +83,43 @@ export interface Task {
 /**
  * 
  * @export
+ * @interface TaskAssign
+ */
+export interface TaskAssign {
+    /**
+     * 
+     * @type {number}
+     * @memberof TaskAssign
+     */
+    id?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TaskAssign
+     */
+    taskId: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TaskAssign
+     */
+    userId: number;
+    /**
+     * 
+     * @type {Task}
+     * @memberof TaskAssign
+     */
+    task?: Task;
+    /**
+     * 
+     * @type {User}
+     * @memberof TaskAssign
+     */
+    user?: User;
+}
+/**
+ * 
+ * @export
  * @interface User
  */
 export interface User {

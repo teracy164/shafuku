@@ -10,9 +10,19 @@
     </div>
     <div class="grid grid-cols-2">
       <div class="col-span-1">
-        <span class="my-headline text-xl">マイスケジュール</span>
-        <div>なし</div>
-        <!-- <el-calendar v-model="value" /> -->
+        <span class="my-headline text-xl">マイタスク</span>
+        <div class="p-2">
+          <template v-if="myTasks?.length">
+            <el-card v-for="task of myTasks" class="mb-2 my-task">
+              <h5 class="text-bold">{{ task.title }}</h5>
+              <p>
+                <span v-if="task.startDate">{{ task.startDate }}～</span>
+                {{ task.endDate }}
+              </p>
+            </el-card>
+          </template>
+          <span v-else>なし</span>
+        </div>
       </div>
       <div class="col-span-1">
         <span class="my-headline text-xl">アクティビティ</span>
@@ -28,10 +38,10 @@
 <script lang="ts" setup>
 import { Task } from '~~/openapi';
 
-const { $api } = useNuxtApp();
+const { $api, $auth } = useNuxtApp();
 const dialog = reactive<{ visible: boolean; task: Task }>({ visible: false, task: null });
 
-const tasks = await $api.getTasks();
+const [tasks, myTasks] = await Promise.all([$api.getTasks(), $api.getTasks({ userId: $auth.loginUser.id })]);
 
 const selectTask = (task: Task) => {
   dialog.task = task;
@@ -50,3 +60,10 @@ definePageMeta({
   middleware: ['auth'],
 });
 </script>
+<style lang="scss">
+.my-task {
+  .el-card__body {
+    padding: 5px 10px;
+  }
+}
+</style>

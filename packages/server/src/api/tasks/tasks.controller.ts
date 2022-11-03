@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, PartialType } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
+import { SearchTaskDto } from './dto/search.dto';
 import { TaskAssign } from './entity/task-assign.entity';
 import { Task } from './entity/task.entity';
 import { TasksService } from './tasks.service';
@@ -13,8 +14,8 @@ export class TasksContoller {
   @Get()
   @ApiOperation({ summary: 'タスク一覧取得' })
   @ApiResponse({ status: 200, type: [Task] })
-  getTasks() {
-    return this.service.findAll();
+  getTasks(@Query() dto: SearchTaskDto) {
+    return this.service.findAll(dto);
   }
 
   @Post()

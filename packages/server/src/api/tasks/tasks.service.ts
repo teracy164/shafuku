@@ -1,5 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { WhereOptions } from 'sequelize';
+import { SearchTaskDto } from './dto/search.dto';
 import { TaskAssign } from './entity/task-assign.entity';
 import { Task } from './entity/task.entity';
 
@@ -7,8 +9,12 @@ import { Task } from './entity/task.entity';
 export class TasksService {
   constructor(@InjectModel(Task) private model: typeof Task, @InjectModel(TaskAssign) private modelAssign: typeof TaskAssign) {}
 
-  findAll() {
-    return this.model.findAll();
+  findAll(dto: SearchTaskDto) {
+    const where: WhereOptions = {};
+    if (dto.userId) {
+      where['$assigners.id$'] = dto.userId;
+    }
+    return this.model.findAll({ where });
   }
 
   addTask(dto: Partial<Task>) {

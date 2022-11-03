@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   LoginDto,
   Task,
+  TaskAssign,
   User,
 } from '../models';
 
@@ -36,6 +37,10 @@ export interface DeleteTaskRequest {
 export interface DeleteTaskAssignerRequest {
     taskId: number;
     assignUserId: number;
+}
+
+export interface GetTasksRequest {
+    userId?: number;
 }
 
 export interface LoginRequest {
@@ -88,7 +93,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * タスク受領者追加
      */
-    async addTaskAssignerRaw(requestParameters: AddTaskAssignerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async addTaskAssignerRaw(requestParameters: AddTaskAssignerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TaskAssign>>> {
         if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
             throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling addTaskAssigner.');
         }
@@ -111,14 +116,15 @@ export class DefaultApi extends runtime.BaseAPI {
             body: requestParameters.requestBody,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response);
     }
 
     /**
      * タスク受領者追加
      */
-    async addTaskAssigner(requestParameters: AddTaskAssignerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.addTaskAssignerRaw(requestParameters, initOverrides);
+    async addTaskAssigner(requestParameters: AddTaskAssignerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TaskAssign>> {
+        const response = await this.addTaskAssignerRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
@@ -212,8 +218,12 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * タスク一覧取得
      */
-    async getTasksRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Task>>> {
+    async getTasksRaw(requestParameters: GetTasksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Task>>> {
         const queryParameters: any = {};
+
+        if (requestParameters.userId !== undefined) {
+            queryParameters['userId'] = requestParameters.userId;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -230,8 +240,8 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * タスク一覧取得
      */
-    async getTasks(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Task>> {
-        const response = await this.getTasksRaw(initOverrides);
+    async getTasks(requestParameters: GetTasksRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Task>> {
+        const response = await this.getTasksRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

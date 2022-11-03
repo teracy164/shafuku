@@ -80,8 +80,10 @@ const updatedTask = (task: Task) => {
 
 const acceptTask = async () => {
   const result = await $api.addTaskAssigner({ taskId: task.id, requestBody: [$auth.loginUser.id] });
-  
+
   ElMessage({ message: '受領しました' });
+  // めんどくさいからリロードする
+  location.reload();
 };
 
 const calcelTask = async () => {
@@ -90,6 +92,8 @@ const calcelTask = async () => {
     if (result) {
       const loginUserId = $auth.loginUser.id;
       $api.deleteTaskAssigner({ taskId: task.id, assignUserId: loginUserId });
+      // めんどくさいからリロードする
+      location.reload();
     }
   } catch (err) {
     // nop
