@@ -7,9 +7,10 @@
     <div class="grid grid-cols-12">
       <div class="col-span-8">
         <label class="my-headline text-xl">受領中タスク</label>
-        <div class="flex flex-wrap">
-          <TaskCard v-for="task of myTasks" :task="task" />
+        <div v-if="myTasks.length" class="flex flex-wrap">
+          <TaskCard v-for="task of myTasks" :task="task" class="cursor-pointer hover:bg-blue-50" @click="showDetail(task)" />
         </div>
+        <div v-else class="p-2">なし</div>
       </div>
       <div class="col-span-4">
         <label class="my-headline text-xl">マイアクティビティ</label>
@@ -23,6 +24,7 @@
         </div>
       </div>
     </div>
+    <TaskDetailDialog v-if="dialog.visible" v-model:visible="dialog.visible" v-model:task="dialog.task" @updated="updatedTask" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -31,6 +33,10 @@ import { BarChart } from 'vue-chart-3';
 import { Task } from '~~/openapi';
 
 const visibleChart = ref(false);
+const dialog = reactive<{ visible: boolean; task: Task }>({
+  visible: false,
+  task: null,
+});
 const chartLabels: string[] = [];
 const chartData: number[] = [];
 
@@ -38,6 +44,7 @@ const rewards = {
   labels: chartLabels,
   datasets: [
     {
+      label: '報酬',
       data: chartData,
       backgroundColor: ['#669'],
     },
@@ -57,6 +64,16 @@ for (let i = 0; i < 12; i++) {
   const rewards = tmpTasks.reduce((sum, t) => sum + t.rewards, 0);
   chartData.push(rewards);
 }
+
+const showDetail = (task: Task) => {
+  dialog.task = task;
+  dialog.visible = true;
+};
+
+const updatedTask = () => {
+  // TODO めんどうなので画面リロード
+  location.reload();
+};
 
 onMounted(() => {
   visibleChart.value = true;

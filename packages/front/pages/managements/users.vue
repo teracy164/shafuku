@@ -8,7 +8,7 @@
           </el-button>
         </template>
         <template #default="scope">
-          <el-button link>
+          <el-button link @click="showDetail(scope.row)">
             <GoogleIcon icon="menu" />
           </el-button>
         </template>
@@ -20,12 +20,18 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { User } from '~~/openapi';
+
 const { $api } = useNuxtApp();
 
 const users = await $api.getUsers();
 
 const add = () => {
   alert('ユーザーが追加出来たら良いよね');
+};
+
+const showDetail = (user: User) => {
+  alert('詳細が見たいよね');
 };
 
 definePageMeta({

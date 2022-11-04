@@ -20,6 +20,6 @@ const menuItems: MenuItem[] = [
       { label: 'タスク管理', link: '/managements/tasks' },
     ],
   },
-  { label: '設定', icon: 'settings', link: '/settings' },
+  // { label: '設定', icon: 'settings', link: '/settings' },
 ];
 </script>
