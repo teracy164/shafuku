@@ -9,7 +9,7 @@
     </div>
     <div class="contents">
       <div class="mb-2 h-20 max-h-20 overflow">
-        <pre class="whitespace-pre-wrap" style="font: inherit">{{ task.contents }}</pre>
+        <pre class="whitespace-pre-wrap" style="font: inherit; max-height: 100%; overflow-y: auto">{{ task.contents }}</pre>
       </div>
       <div class="flex">
         <div class="flex items-center mr-4">

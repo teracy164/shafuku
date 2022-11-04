@@ -11,7 +11,7 @@
     </template>
     <div class="contents">
       <div class="mb-10 overflow">
-        <pre class="whitespace-pre-wrap" style="font: inherit; max-height: 100%; overflow-y: auto">{{ task.contents }}</pre>
+        <pre class="whitespace-pre-wrap" style="font: inherit">{{ task.contents }}</pre>
       </div>
       <div class="flex">
         <div class="flex items-center mr-4">
