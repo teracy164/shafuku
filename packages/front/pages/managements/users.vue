@@ -3,7 +3,7 @@
     <el-table :data="users" style="width: 100%">
       <el-table-column width="60">
         <template #header>
-          <el-button type="primary" link>
+          <el-button type="primary" link @click="add">
             <GoogleIcon icon="add" />
           </el-button>
         </template>
@@ -23,6 +23,10 @@
 const { $api } = useNuxtApp();
 
 const users = await $api.getUsers();
+
+const add = () => {
+  alert('ユーザーが追加出来たら良いよね');
+};
 
 definePageMeta({
   layout: 'authenticated',
