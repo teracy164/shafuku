@@ -17,7 +17,7 @@
       <el-table-column prop="name" label="Name" width="180" />
       <el-table-column label="権限">
         <template #default="scope">
-          {{ getAuthorityName(scope.row) }}
+          {{ UserUtil.getAuthorityName(scope.row) }}
         </template>
       </el-table-column>
     </el-table>
@@ -29,6 +29,7 @@
 <script lang="ts" setup>
 import { User } from '~~/openapi';
 import { AUTHORITY, AuthorityInfo } from '~~/shared/constants/authorities';
+import { UserUtil } from '~~/shared/utils/user';
 
 const { $api } = useNuxtApp();
 
@@ -48,12 +49,6 @@ const add = () => {
 const showDetail = (user: User) => {
   state.detailDialog.user = user;
   state.detailDialog.visible = true;
-};
-
-const getAuthorityName = (user: User) => {
-  const authorityId = user.authority as AUTHORITY;
-  const auth = AuthorityInfo[authorityId];
-  return auth?.name;
 };
 
 definePageMeta({

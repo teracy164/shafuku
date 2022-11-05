@@ -11,6 +11,13 @@
       <div class="mb-2 h-20 max-h-20 overflow">
         <pre class="whitespace-pre-wrap" style="font: inherit; max-height: 100%; overflow-y: auto">{{ task.contents }}</pre>
       </div>
+      <div class="flex items-center">
+        <GoogleIcon icon="event" class="text-base pr-2" />
+        <span class="text-sm">
+          <span v-if="task.startDate"> {{ task.startDate }}～ </span>
+          {{ task.endDate }}
+        </span>
+      </div>
       <div class="flex">
         <div class="flex items-center mr-4">
           <GoogleIcon icon="payments" class="text-base pr-2" />
@@ -20,14 +27,6 @@
           <GoogleIcon icon="group" class="text-base pr-2" />
           <span class="text-sm">{{ task.assigners?.length || 0 }}/{{ task.numOfRecruit }}</span>
         </div>
-      </div>
-
-      <div class="flex items-center">
-        <GoogleIcon icon="event" class="text-base pr-2" />
-        <span class="text-sm">
-          <span v-if="task.startDate"> {{ task.startDate }}～ </span>
-          {{ task.endDate }}
-        </span>
       </div>
     </div>
     <div class="footer">

@@ -7,7 +7,7 @@
       <div class="col-span-4">氏名</div>
       <div class="col-span-8">{{ user.name }}</div>
       <div class="col-span-4">権限</div>
-      <div class="col-span-8">{{ getAuthorityName(user) }}</div>
+      <div class="col-span-8">{{ UserUtil.getAuthorityName(user) }}</div>
     </div>
     <template #footer>
       <div class="flex justify-between">
@@ -25,6 +25,7 @@
 <script setup lang="ts">
 import { User } from '~~/openapi';
 import { AUTHORITY, AuthorityInfo } from '~~/shared/constants/authorities';
+import { UserUtil } from '~~/shared/utils/user';
 
 const { visible, user } = defineProps<{ visible: boolean; user: User }>();
 const emit = defineEmits(['update:visible', 'update:task', 'updated']);

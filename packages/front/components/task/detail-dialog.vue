@@ -13,23 +13,29 @@
       <div class="mb-10 overflow">
         <pre class="whitespace-pre-wrap" style="font: inherit">{{ task.contents }}</pre>
       </div>
-      <div class="flex">
-        <div class="flex items-center mr-4">
-          <GoogleIcon icon="payments" class="text-base pr-2" />
-          <span class="text-sm">{{ $currency(task.rewards) }}</span>
-        </div>
-        <div class="flex items-center">
-          <GoogleIcon icon="group" class="text-base pr-2" />
-          <span class="text-sm">{{ task.assigners?.length || 0 }}/{{ task.numOfRecruit }}</span>
-        </div>
-      </div>
-
       <div class="flex items-center">
         <GoogleIcon icon="event" class="text-base pr-2" />
         <span class="text-sm">
           <span v-if="task.startDate"> {{ task.startDate }}～ </span>
           {{ task.endDate }}
         </span>
+      </div>
+      <div class="flex">
+        <div class="flex items-center mr-4">
+          <GoogleIcon icon="payments" class="text-base pr-2" />
+          <span class="text-sm">{{ $currency(task.rewards) }}</span>
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center">
+          <GoogleIcon icon="group" class="text-base pr-2" />
+          <span class="text-sm">{{ task.assigners?.length || 0 }}/{{ task.numOfRecruit }}人</span>
+        </div>
+        <div class="px-8">
+          <ul v-if="task.assigners?.length">
+            <li v-for="assigner of task.assigners">・{{ assigner.name }}</li>
+          </ul>
+        </div>
       </div>
     </div>
     <template #footer>
