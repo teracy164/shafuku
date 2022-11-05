@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Op } from 'sequelize';
 import { WhereOptions } from 'sequelize';
 import { SearchTaskDto } from './dto/search.dto';
 import { TaskAssign } from './entity/task-assign.entity';
@@ -9,10 +10,20 @@ import { Task } from './entity/task.entity';
 export class TasksService {
   constructor(@InjectModel(Task) private model: typeof Task, @InjectModel(TaskAssign) private modelAssign: typeof TaskAssign) {}
 
-  findAll(dto: SearchTaskDto) {
+  async findAll(dto: SearchTaskDto) {
     const where: WhereOptions = {};
     if (dto.userId) {
-      where['$assigners.id$'] = dto.userId;
+      // いったん、指定のユーザーを含むタスクをピックアップ
+      const targets = await this.model.findAll({
+        attributes: ['id'],
+        where: { '$assigners.id$': dto.userId },
+      });
+      // 全情報を付与するため、改めて取得
+      return this.model.findAll({
+        where: {
+          id: { [Op.in]: targets.map((task) => task.id) },
+        },
+      });
     }
     return this.model.findAll({ where });
   }
