@@ -32,8 +32,13 @@ export class User extends Model {
   @Column
   name: string;
 
+  @ApiPropertyOptional()
   @Column
   username: string;
+
+  @ApiProperty()
+  @Column
+  authority: number;
 
   @Column
   salt: string;

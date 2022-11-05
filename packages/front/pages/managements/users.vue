@@ -15,23 +15,45 @@
       </el-table-column>
       <el-table-column prop="id" label="ID" width="180" />
       <el-table-column prop="name" label="Name" width="180" />
-      <el-table-column prop="address" label="Address" />
+      <el-table-column label="権限">
+        <template #default="scope">
+          {{ getAuthorityName(scope.row) }}
+        </template>
+      </el-table-column>
     </el-table>
+
+    <UserDetailDialog v-if="state.detailDialog.visible" v-model:visible="state.detailDialog.visible" :user="state.detailDialog.user" />
+    <UserEditDialog v-if="state.editDialog.visible" v-model:visible="state.editDialog.visible" :user="state.editDialog.user" />
   </div>
 </template>
 <script lang="ts" setup>
 import { User } from '~~/openapi';
+import { AUTHORITY, AuthorityInfo } from '~~/shared/constants/authorities';
 
 const { $api } = useNuxtApp();
 
 const users = await $api.getUsers();
 
+type DialogData = { visible: boolean; user?: User };
+const state = reactive<{ editDialog: DialogData; detailDialog: DialogData }>({
+  editDialog: { visible: false, user: null },
+  detailDialog: { visible: false, user: null },
+});
+
 const add = () => {
-  alert('ユーザーが追加出来たら良いよね');
+  state.editDialog.user = null;
+  state.editDialog.visible = true;
 };
 
 const showDetail = (user: User) => {
-  alert('詳細が見たいよね');
+  state.detailDialog.user = user;
+  state.detailDialog.visible = true;
+};
+
+const getAuthorityName = (user: User) => {
+  const authorityId = user.authority as AUTHORITY;
+  const auth = AuthorityInfo[authorityId];
+  return auth?.name;
 };
 
 definePageMeta({

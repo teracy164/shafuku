@@ -3,6 +3,25 @@
 /**
  * 
  * @export
+ * @interface CreateUserDto
+ */
+export interface CreateUserDto {
+    /**
+     * 
+     * @type {User}
+     * @memberof CreateUserDto
+     */
+    user: User;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUserDto
+     */
+    password: string;
+}
+/**
+ * 
+ * @export
  * @interface LoginDto
  */
 export interface LoginDto {
@@ -120,6 +139,25 @@ export interface TaskAssign {
 /**
  * 
  * @export
+ * @interface UpdateUserDto
+ */
+export interface UpdateUserDto {
+    /**
+     * 
+     * @type {User}
+     * @memberof UpdateUserDto
+     */
+    user?: User;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserDto
+     */
+    password?: string;
+}
+/**
+ * 
+ * @export
  * @interface User
  */
 export interface User {
@@ -135,4 +173,16 @@ export interface User {
      * @memberof User
      */
     name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    username?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof User
+     */
+    authority: number;
 }

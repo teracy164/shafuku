@@ -15,9 +15,11 @@
 
 import * as runtime from '../runtime';
 import type {
+  CreateUserDto,
   LoginDto,
   Task,
   TaskAssign,
+  UpdateUserDto,
   User,
 } from '../models';
 
@@ -28,6 +30,10 @@ export interface AddTaskRequest {
 export interface AddTaskAssignerRequest {
     taskId: number;
     requestBody: Array<number>;
+}
+
+export interface AddUserRequest {
+    createUserDto: CreateUserDto;
 }
 
 export interface DeleteTaskRequest {
@@ -50,6 +56,11 @@ export interface LoginRequest {
 export interface UpdateTaskRequest {
     id: number;
     task: Task;
+}
+
+export interface UpdateUserRequest {
+    id: number;
+    updateUserDto: UpdateUserDto;
 }
 
 /**
@@ -124,6 +135,39 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async addTaskAssigner(requestParameters: AddTaskAssignerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TaskAssign>> {
         const response = await this.addTaskAssignerRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * ユーザー追加
+     */
+    async addUserRaw(requestParameters: AddUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
+        if (requestParameters.createUserDto === null || requestParameters.createUserDto === undefined) {
+            throw new runtime.RequiredError('createUserDto','Required parameter requestParameters.createUserDto was null or undefined when calling addUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/users`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.createUserDto,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     * ユーザー追加
+     */
+    async addUser(requestParameters: AddUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User> {
+        const response = await this.addUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -362,6 +406,43 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async updateTask(requestParameters: UpdateTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Task> {
         const response = await this.updateTaskRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * ユーザー編集
+     */
+    async updateUserRaw(requestParameters: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateUser.');
+        }
+
+        if (requestParameters.updateUserDto === null || requestParameters.updateUserDto === undefined) {
+            throw new runtime.RequiredError('updateUserDto','Required parameter requestParameters.updateUserDto was null or undefined when calling updateUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/users/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.updateUserDto,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     * ユーザー編集
+     */
+    async updateUser(requestParameters: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User> {
+        const response = await this.updateUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
