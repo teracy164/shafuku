@@ -44,7 +44,7 @@
 import { MenuItem } from '~~/types';
 
 const { menuItems } = defineProps<{ menuItems: MenuItem[] }>();
-const isCollapse = ref(true);
+const isCollapse = ref(false);
 const activeIndex = ref('');
 
 const selectMenu = (menuItem: MenuItem, index: string) => {
