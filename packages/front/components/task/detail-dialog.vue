@@ -42,11 +42,11 @@
       <div class="flex justify-between">
         <div>
           <el-button type="warning" v-if="isCancelable" @click="calcelTask">キャンセルする</el-button>
+          <el-button type="primary" v-if="isAcceptable" @click="acceptTask">受領する</el-button>
         </div>
         <div>
           <el-button @click="_visible = false">閉じる</el-button>
-          <el-button type="primary" @click="edit">編集</el-button>
-          <el-button type="primary" v-if="isAcceptable" @click="acceptTask">受領する</el-button>
+          <el-button v-if="isEditable" type="primary" @click="edit">編集</el-button>
         </div>
       </div>
     </template>
@@ -57,12 +57,14 @@
 <script setup lang="ts">
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Task } from '~~/openapi';
+import { AUTHORITY } from '~~/shared/constants/authorities';
 
 const { $auth, $api } = useNuxtApp();
 
 const { visible, task } = defineProps<{ visible: boolean; task: Task }>();
 const emit = defineEmits(['update:visible', 'update:task', 'updated']);
 
+const isEditable = $auth.hasAuthority(AUTHORITY.SYSTEM_ADMIN);
 const isAssigned = task?.assigners?.some((a) => a.id === $auth.loginUser.id);
 const isAcceptable = !isAssigned;
 const isCancelable = isAssigned;

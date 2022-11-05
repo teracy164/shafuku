@@ -1,5 +1,6 @@
 import { AppConfig } from 'vue';
 import { DefaultApi, User } from '~~/openapi';
+import { AUTHORITY } from '~~/shared/constants/authorities';
 
 export enum AuthStatus {
   NONE = 1,
@@ -67,6 +68,14 @@ export class AuthPlugin {
 
   isLoggedIn() {
     return !!this.loginUser;
+  }
+
+  hasAuthority(authority: AUTHORITY) {
+    const myAuthority = this.loginUser.authority;
+    if (myAuthority === AUTHORITY.SYSTEM_ADMIN) {
+      return true;
+    }
+    return myAuthority === authority;
   }
 }
 
