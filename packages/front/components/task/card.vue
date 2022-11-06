@@ -1,5 +1,5 @@
 <template>
-  <el-card class="m-2 w-[250px] min-w-[250px]">
+  <el-card class="m-2 w-[250px] min-w-[250px] task-card">
     <div class="flex flex-col h-full">
       <div class="border-b-[1px] border-solid b-color-gray-300 mb-2">
         <p class="text-xl">{{ task.title }}</p>
@@ -8,10 +8,12 @@
           <span>{{ task.orderer }}</span>
         </p>
       </div>
-      <div class="contents grow">
+      <div class="grow">
         <div class="mb-2 h-20 max-h-20 overflow">
           <pre class="whitespace-pre-wrap" style="font: inherit; max-height: 100%; overflow-y: auto">{{ task.contents }}</pre>
         </div>
+      </div>
+      <div>
         <div class="flex items-center">
           <GoogleIcon icon="event" class="text-base pr-2" />
           <span class="text-sm">
@@ -30,9 +32,6 @@
           </div>
         </div>
       </div>
-      <div class="footer">
-        <slot name="footer" />
-      </div>
     </div>
   </el-card>
 </template>
@@ -41,6 +40,13 @@ import { Task } from '~~/openapi';
 
 const { task } = defineProps<{ task: Task }>();
 </script>
+<style lang="scss">
+.task-card {
+  .el-card__body {
+    height: 100%;
+  }
+}
+</style>
 <style lang="scss" scoped>
 .orderer {
   .material-symbols-outlined {
