@@ -2,10 +2,10 @@
   <el-card class="m-2 w-[250px] min-w-[250px] task-card">
     <div class="flex flex-col h-full">
       <div class="border-b-[1px] border-solid b-color-gray-300 mb-2">
-        <p class="text-xl">{{ task.title }}</p>
-        <p class="flex items-center py-1 orderer text-sm">
+        <p class="text-xl task-title" :title="task.title">{{ task.title }}</p>
+        <p class="flex items-center py-1 orderer text-sm task-orderer">
           <GoogleIcon icon="account_circle" class="pr-1" />
-          <span>{{ task.orderer }}</span>
+          <span :title="task.orderer">{{ task.orderer }}</span>
         </p>
       </div>
       <div class="grow">
@@ -48,6 +48,23 @@ const { task } = defineProps<{ task: Task }>();
 }
 </style>
 <style lang="scss" scoped>
+.task-card {
+  .task-title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .task-orderer {
+    span {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      overflow: hidden;
+    }
+  }
+}
 .orderer {
   .material-symbols-outlined {
     font-size: 1.3em;
