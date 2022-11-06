@@ -12,6 +12,7 @@ import { AUTHORITY } from '~~/shared/constants/authorities';
 
 const menuItems: MenuItem[] = [
   { label: 'TOP', icon: 'home', link: '/' },
+  { label: 'タスク一覧', icon: 'task', link: '/tasks' },
   { label: 'マイページ', icon: 'person', link: '/my-page' },
 ];
 
