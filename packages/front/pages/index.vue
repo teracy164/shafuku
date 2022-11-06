@@ -15,7 +15,7 @@
           <template v-if="myTasks?.length">
             <el-card v-for="task of myTasks" class="mb-2 my-task cursor-pointer hover:bg-blue-50" @click="selectTask(task)">
               <h5 class="text-bold">{{ task.title }}</h5>
-              <p>
+              <p class="text-sm text-gray-300">
                 <span v-if="task.startDate">{{ task.startDate }}～</span>
                 {{ task.endDate }}
               </p>

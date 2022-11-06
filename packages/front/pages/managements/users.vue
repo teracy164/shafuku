@@ -28,7 +28,6 @@
 </template>
 <script lang="ts" setup>
 import { User } from '~~/openapi';
-import { AUTHORITY, AuthorityInfo } from '~~/shared/constants/authorities';
 import { UserUtil } from '~~/shared/utils/user';
 
 const { $api } = useNuxtApp();
