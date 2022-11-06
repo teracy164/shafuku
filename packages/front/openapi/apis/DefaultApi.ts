@@ -49,6 +49,8 @@ export interface DeleteTaskAssignerRequest {
 
 export interface GetTasksRequest {
     userId?: number;
+    keyword?: string;
+    orderer?: string;
 }
 
 export interface LoginRequest {
@@ -274,6 +276,14 @@ export class DefaultApi extends runtime.BaseAPI {
 
         if (requestParameters.userId !== undefined) {
             queryParameters['userId'] = requestParameters.userId;
+        }
+
+        if (requestParameters.keyword !== undefined) {
+            queryParameters['keyword'] = requestParameters.keyword;
+        }
+
+        if (requestParameters.orderer !== undefined) {
+            queryParameters['orderer'] = requestParameters.orderer;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};

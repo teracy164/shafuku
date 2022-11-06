@@ -17,17 +17,26 @@ export class TasksService {
 
   async findAll(dto: SearchTaskDto) {
     const where: WhereOptions = {};
+    if (dto.keyword) {
+      Object.assign(where, { [Op.or]: [{ title: { [Op.like]: `%${dto.keyword}%` } }, { contents: { [Op.like]: `%${dto.keyword}%` } }] });
+    }
+    if (dto.orderer) {
+      Object.assign(where, { orderer: { [Op.like]: `%${dto.orderer}%` } });
+    }
     if (dto.userId) {
       // いったん、指定のユーザーを含むタスクをピックアップ
       const targets = await this.model.findAll({
         attributes: ['id'],
-        where: { '$assigners.id$': dto.userId },
+        where: Object.assign({ '$assigners.id$': dto.userId }, where),
       });
       // 全情報を付与するため、改めて取得
       return this.model.findAll({
-        where: {
-          id: { [Op.in]: targets.map((task) => task.id) },
-        },
+        where: Object.assign(
+          {
+            id: { [Op.in]: targets.map((task) => task.id) },
+          },
+          where
+        ),
       });
     }
     return this.model.findAll({ where });

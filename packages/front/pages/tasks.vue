@@ -1,9 +1,17 @@
 <template>
-  <div>
-    <div class="border p-5">
-      検索したい
+  <div v-loading="isLoading">
+    <div class="relative border p-5">
+      <label class="absolute top-[-0.8em] bg-white px-5">検索</label>
+      <div class="flex">
+        <div class="mr-2">
+          <el-input v-model="search.keyword" placeholder="キーワード" />
+        </div>
+        <div class="mr-2">
+          <el-input v-model="search.orderer" placeholder="依頼者" />
+        </div>
+      </div>
       <div class="flex justify-end">
-        <el-button type="primary">検索</el-button>
+        <el-button type="primary" @click="searchTasks">検索</el-button>
       </div>
     </div>
     <div class="flex flex-wrap">
@@ -16,7 +24,22 @@
 import { Task } from '~~/openapi';
 
 const { $api } = useNuxtApp();
-const tasks = await $api.getTasks();
+
+const search = reactive({
+  keyword: '',
+  orderer: '',
+});
+const isLoading = ref(false);
+const tasks = ref([]);
+
+const searchTasks = async () => {
+  isLoading.value = true;
+  tasks.value = await $api.getTasks({
+    keyword: search.keyword,
+    orderer: search.orderer,
+  });
+  isLoading.value = false;
+};
 
 const dialog = reactive<{ visible: boolean; task: Task }>({
   visible: false,
@@ -32,6 +55,9 @@ const updatedTask = () => {
   // TODO めんどうなので画面リロード
   location.reload();
 };
+
+// 初期表示用の検索
+searchTasks();
 
 definePageMeta({
   layout: 'authenticated',
