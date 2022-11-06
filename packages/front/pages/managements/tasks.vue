@@ -31,6 +31,11 @@
           <span> {{ scope.row.assigners?.length || 0 }} / {{ scope.row.numOfRecruit }}</span>
         </template>
       </el-table-column>
+      <el-table-column prop="rewards" label="ステータス">
+        <template #default="scope">
+          <span> {{ isCompleted(scope.row) ? '完了' : '' }}</span>
+        </template>
+      </el-table-column>
     </el-table>
 
     <TaskDetailDialog v-if="state.detailDialog.visible" v-model:visible="state.detailDialog.visible" :task="state.detailDialog.task" />
@@ -39,6 +44,7 @@
 </template>
 <script lang="ts" setup>
 import { Task } from '~~/openapi';
+import { TASK_STATUS } from '~~/shared/constants/status';
 
 definePageMeta({
   layout: 'authenticated',
@@ -53,6 +59,10 @@ const state = reactive<{ editDialog: DialogData; detailDialog: DialogData }>({
 
 const { $api } = useNuxtApp();
 const tasks = await $api.getTasks();
+
+const isCompleted = (task: Task) => {
+  return task.lastStatus?.status === TASK_STATUS.COMPLETE;
+};
 
 const showDetail = (task: Task) => {
   state.detailDialog = { visible: true, task };
