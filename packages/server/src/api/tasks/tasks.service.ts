@@ -4,11 +4,16 @@ import { Op } from 'sequelize';
 import { WhereOptions } from 'sequelize';
 import { SearchTaskDto } from './dto/search.dto';
 import { TaskAssign } from './entity/task-assign.entity';
+import { TaskStatus } from './entity/task-status.entity';
 import { Task } from './entity/task.entity';
 
 @Injectable()
 export class TasksService {
-  constructor(@InjectModel(Task) private model: typeof Task, @InjectModel(TaskAssign) private modelAssign: typeof TaskAssign) {}
+  constructor(
+    @InjectModel(Task) private model: typeof Task,
+    @InjectModel(TaskStatus) private modelStatus: typeof TaskStatus,
+    @InjectModel(TaskAssign) private modelAssign: typeof TaskAssign
+  ) {}
 
   async findAll(dto: SearchTaskDto) {
     const where: WhereOptions = {};
@@ -26,6 +31,10 @@ export class TasksService {
       });
     }
     return this.model.findAll({ where });
+  }
+
+  findOne(id: number) {
+    return this.model.findOne({ where: { id } });
   }
 
   addTask(dto: Partial<Task>) {
@@ -65,6 +74,14 @@ export class TasksService {
     if (task) {
       await this.modelAssign.destroy({ where: { taskId, userId: assignUserId } });
       return;
+    }
+    throw new BadRequestException();
+  }
+
+  async updateTaskStatus(taskId: number, status: number) {
+    const task = await this.findOne(taskId);
+    if (task) {
+      return this.modelStatus.create({ taskId, status });
     }
     throw new BadRequestException();
   }

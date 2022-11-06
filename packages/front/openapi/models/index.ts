@@ -94,6 +94,12 @@ export interface Task {
     numOfRecruit: number;
     /**
      * 
+     * @type {TaskStatus}
+     * @memberof Task
+     */
+    lastStatus?: TaskStatus;
+    /**
+     * 
      * @type {Array<User>}
      * @memberof Task
      */
@@ -135,6 +141,44 @@ export interface TaskAssign {
      * @memberof TaskAssign
      */
     user?: User;
+}
+/**
+ * 
+ * @export
+ * @interface TaskStatus
+ */
+export interface TaskStatus {
+    /**
+     * 
+     * @type {number}
+     * @memberof TaskStatus
+     */
+    id?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TaskStatus
+     */
+    taskId: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TaskStatus
+     */
+    status: number;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateTaskStatusDto
+ */
+export interface UpdateTaskStatusDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateTaskStatusDto
+     */
+    status: number;
 }
 /**
  * 

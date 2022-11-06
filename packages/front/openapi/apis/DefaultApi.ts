@@ -19,6 +19,8 @@ import type {
   LoginDto,
   Task,
   TaskAssign,
+  TaskStatus,
+  UpdateTaskStatusDto,
   UpdateUserDto,
   User,
 } from '../models';
@@ -56,6 +58,11 @@ export interface LoginRequest {
 export interface UpdateTaskRequest {
     id: number;
     task: Task;
+}
+
+export interface UpdateTaskStatusRequest {
+    taskId: number;
+    updateTaskStatusDto: UpdateTaskStatusDto;
 }
 
 export interface UpdateUserRequest {
@@ -406,6 +413,43 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async updateTask(requestParameters: UpdateTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Task> {
         const response = await this.updateTaskRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * タスクステータス更新
+     */
+    async updateTaskStatusRaw(requestParameters: UpdateTaskStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskStatus>> {
+        if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
+            throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling updateTaskStatus.');
+        }
+
+        if (requestParameters.updateTaskStatusDto === null || requestParameters.updateTaskStatusDto === undefined) {
+            throw new runtime.RequiredError('updateTaskStatusDto','Required parameter requestParameters.updateTaskStatusDto was null or undefined when calling updateTaskStatus.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/tasks/{taskId}/status`.replace(`{${"taskId"}}`, encodeURIComponent(String(requestParameters.taskId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.updateTaskStatusDto,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     * タスクステータス更新
+     */
+    async updateTaskStatus(requestParameters: UpdateTaskStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskStatus> {
+        const response = await this.updateTaskStatusRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

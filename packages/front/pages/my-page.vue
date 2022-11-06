@@ -31,6 +31,7 @@
 import dayjs from 'dayjs';
 import { BarChart } from 'vue-chart-3';
 import { Task } from '~~/openapi';
+import { TASK_STATUS } from '~~/shared/constants/status';
 
 const visibleChart = ref(false);
 const dialog = reactive<{ visible: boolean; task: Task }>({
@@ -52,7 +53,8 @@ const rewards = {
 };
 
 const { $api, $auth } = useNuxtApp();
-const myTasks = await $api.getTasks({ userId: $auth.loginUser.id });
+const result = await $api.getTasks({ userId: $auth.loginUser.id });
+const myTasks = result.filter((task) => !(task.lastStatus?.status === TASK_STATUS.COMPLETE));
 
 // 報酬の集計
 for (let i = 0; i < 12; i++) {

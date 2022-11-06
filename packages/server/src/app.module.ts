@@ -9,8 +9,8 @@ import { join } from 'path';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'front/dist'),
     }),
-    ApiModule,
     DatabaseModule,
+    ApiModule,
   ],
   controllers: [],
   providers: [],

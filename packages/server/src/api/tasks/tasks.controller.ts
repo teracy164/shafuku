@@ -2,7 +2,9 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } f
 import { ApiBody, ApiOperation, ApiResponse, PartialType } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { SearchTaskDto } from './dto/search.dto';
+import { UpdateTaskStatusDto } from './dto/update-status.dto';
 import { TaskAssign } from './entity/task-assign.entity';
+import { TaskStatus } from './entity/task-status.entity';
 import { Task } from './entity/task.entity';
 import { TasksService } from './tasks.service';
 
@@ -52,5 +54,14 @@ export class TasksContoller {
   @ApiOperation({ summary: 'タスク受領者削除' })
   deleteTaskAssigner(@Param('taskId') taskId: number, @Param('assignUserId') assignUserId: number) {
     return this.service.deleteTaskAssigner(taskId, assignUserId);
+  }
+
+  @Patch(':taskId/status')
+  @ApiOperation({ summary: 'タスクステータス更新' })
+  @ApiBody({ type: UpdateTaskStatusDto })
+  @ApiResponse({ type: TaskStatus })
+  updateTaskStatus(@Param('taskId') taskId: number, @Body() dto: UpdateTaskStatusDto) {
+    console.log('update task status', dto);
+    return this.service.updateTaskStatus(taskId, dto.status);
   }
 }
