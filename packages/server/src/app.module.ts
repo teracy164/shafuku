@@ -3,6 +3,7 @@ import { ApiModule } from './api/api.module';
 import { DatabaseModule } from './database.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { BatchModule } from './batch/batch.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { join } from 'path';
     }),
     DatabaseModule,
     ApiModule,
+    BatchModule,
   ],
   controllers: [],
   providers: [],
