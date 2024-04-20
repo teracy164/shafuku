@@ -24,6 +24,7 @@ services:
       DB_NAME: shafuku
       DB_USERNAME: test
       DB_PASSWORD: test
+      HOST: https://shafuku.onrender.com/
   front:
     image: node:18-alpine3.15
     working_dir: /develop
