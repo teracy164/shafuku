@@ -13,6 +13,7 @@ export class SeedUser implements OnSeederInit {
         username: 'test',
         password: 'test',
         name: 'テスト太郎',
+        authority: 1,
       },
     ];
     return data;

@@ -52,7 +52,7 @@
 import { dayjs, FormInstance, FormRules, ElMessage } from 'element-plus';
 import { Task } from '~~/openapi';
 
-const { visible, task } = defineProps<{ visible: boolean; task?: Task | null }>();
+const { visible, src } = defineProps<{ visible: boolean; src?: Task | null }>();
 const emit = defineEmits(['closed', 'update:visible', 'updated']);
 
 interface Form extends Task {
@@ -101,15 +101,15 @@ const rules = reactive<FormRules>({
   // date: [{ required: true, message: '必須です', trigger: 'blur' }],
 });
 
-if (task) {
-  Object.assign(form, task);
+if (src) {
+  Object.assign(form, src);
 
-  isPeriodRef.value = !!task.startDate;
+  isPeriodRef.value = !!src.startDate;
   if (isPeriodRef.value) {
-    form.period.startDate = dayjs(task.startDate).toDate();
-    form.period.endDate = dayjs(task.endDate).toDate();
+    form.period.startDate = dayjs(src.startDate).toDate();
+    form.period.endDate = dayjs(src.endDate).toDate();
   } else {
-    form.date = dayjs(task.endDate).toDate();
+    form.date = dayjs(src.endDate).toDate();
   }
 }
 
@@ -123,6 +123,7 @@ const changeSwitch = (formEl: FormInstance | undefined) => {
 };
 
 const save = async (formEl: FormInstance | undefined) => {
+  console.log('save', src, form);
   if (!formEl) return;
 
   const isValid = await formEl.validate();
@@ -145,7 +146,7 @@ const save = async (formEl: FormInstance | undefined) => {
   }
 
   let result: Task;
-  if (task) {
+  if (src) {
     result = await $api.updateTask({ id: task.id, task: data });
   } else {
     result = await $api.addTask({ task: data });
